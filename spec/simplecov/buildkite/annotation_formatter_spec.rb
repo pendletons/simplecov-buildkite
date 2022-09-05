@@ -53,6 +53,25 @@ RSpec.describe SimpleCov::Buildkite::AnnotationFormatter do
     end
   end
 
+  context 'with a custom annotation header' do
+    around { |example| stubbing_env('ANNOTATION_TITLE', 'TEST ME') { example.call } }
+
+    it 'uses the custom title in the annotation' do
+      expect { formatter.format(result) }.to output(<<~MESSAGE).to_stdout
+        #### TEST ME
+
+        <dl class="flex flex-wrap m1 mxn2">
+        <div class="m2"><dt>All files</dt><dd>
+
+        **<span class="h2 regular">100</span>%**  
+        0 of 0 lines
+
+        </dd></div>
+        </dl>
+      MESSAGE
+    end
+  end
+
   def stubbing_env(name, value)
     begin
       original = ENV[name]

@@ -6,8 +6,9 @@ module SimpleCov::Buildkite
       git_results, general_results = filter_git_groups(ignore_empty_groups(result.groups))
                                      .values_at(:git, :general)
 
+      message_header = ENV.fetch('ANNOTATION_TITLE', 'Coverage')
       message = <<~MESSAGE
-        #### Coverage
+        #### #{message_header}
 
         <dl class="flex flex-wrap m1 mxn2">
       MESSAGE

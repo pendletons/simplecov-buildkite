@@ -7,6 +7,7 @@ module SimpleCov::Buildkite
                                      .values_at(:git, :general)
 
       message_header = ENV.fetch('ANNOTATION_TITLE', 'Coverage')
+      puts "Annotation header: #{message_header}"
       message = <<~MESSAGE
         #### #{message_header}
 
@@ -85,7 +86,7 @@ module SimpleCov::Buildkite
     end
 
     def format_integer(integer)
-      Kernel.format('%<integer>d', integer: integer).gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1,")
+      Kernel.format('%<integer>d', integer:).gsub(/(\d)(?=(\d\d\d)+(?!\d))/, '\\1,')
     end
 
     def format_float(float)
@@ -99,7 +100,7 @@ module SimpleCov::Buildkite
 
       metric += <<~METRIC_VALUE
 
-        **<span class="h2 regular">#{format_float(element.covered_percent)}</span>%**  
+        **<span class="h2 regular">#{format_float(element.covered_percent)}</span>%**#{'  '}
         #{format_line_count(element)}
 
       METRIC_VALUE
